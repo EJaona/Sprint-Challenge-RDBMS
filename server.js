@@ -1,21 +1,12 @@
 const express = require("express");
 const helmet = require("helmet");
-const knex = require("knex");
-const config = require("./knexfile");
-
-const db = knex(config.development);
+const projectRouter = require("./projectRouter");
+const actionRouter = require("./actionRouter");
 
 const server = express();
 server.use(express.json());
 server.use(helmet());
-
-server.get("/projects", async (req, res) => {
-  try {
-    const projects = await db("projects");
-    res.status(200).json(projects);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+server.use("/projects", projectRouter);
+server.use("/actions", actionRouter);
 
 module.exports = server;
