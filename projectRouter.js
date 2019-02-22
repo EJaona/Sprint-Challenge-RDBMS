@@ -37,4 +37,30 @@ projectRouter.post("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+projectRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+  try {
+    const changed = await db("projects")
+      .update(changes)
+      .where({ id: id });
+    res.status(200).json(changed);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+projectRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await db("projects")
+      .delete()
+      .where({ id: id });
+    res.status(200).json(deleted);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 module.exports = projectRouter;

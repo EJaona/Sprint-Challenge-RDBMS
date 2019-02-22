@@ -31,12 +31,25 @@ actionRouter.post("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
-actionRouter.get("/:id", async (req, res) => {
+actionRouter.put("/:id", async (req, res) => {
   const { id } = req.params;
+  const changes = req.body;
   try {
     const action = await db("actions")
-      .where({ id: id })
-      .first();
+      .update(changes)
+      .where({ id: id });
+    res.status(200).json(action);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+actionRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const action = await db("actions")
+      .delete()
+      .where({ id: id });
     res.status(200).json(action);
   } catch (error) {
     res.status(500).json(error);
